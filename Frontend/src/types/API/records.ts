@@ -1,4 +1,4 @@
 export interface ApiRecord {
-  id: number,
-  ["string"]: string|number|null,
+  id: string,
+  [key: string]: string|number|null,
 }

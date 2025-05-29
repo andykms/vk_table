@@ -57,22 +57,71 @@ test("Получение типов", async () => {
 
 test("Получение первой записи", async () => {
   const fields = await mockApi.getRecord("0");
-  expect(fields).toEqual([{
+  expect(fields).toEqual({
       "id": "0",
       "Товар": "Блокатор берибанка-онлайн",
       "Цена": 1,
       "Производитель": "ПАО Тири-банк",
       "Дата производства": "19.12.3018"
-    }]);
+    });
 })
 
 test("Получение произвольной записи", async () => {
-  const fields = await mockApi.getRecord("5");
-  expect(fields).toEqual([{
+  const fields = await mockApi.getRecord("2");
+  expect(fields).toEqual({
+      "id": "2",
+      "Товар": "Голограмма музыки",
+      "Цена": 9999,
+      "Производитель": "Берзвук",
+      "Дата производства": "11.07.2901"
+    });
+})
+
+test("Удаление и добавление произвольной записи", async () => {
+  const fields = await mockApi.deleteRecord("5");
+  await mockApi.postRecord({
       "id": "5",
-      "Товар": "Кэшбек Тири-банка 1000 рублей",
+      "Товар": "Кешбек Тири-банка 1000 рублей",
       "Цена": 1200,
-      "Производитель": "Тири-кэш",
+      "Производитель": "Тири-кеш",
       "Дата производства": "10.01.2808"
-    }]);
+    });
+  expect(fields).toEqual({
+      "id": "5",
+      "Товар": "Кешбек Тири-банка 1000 рублей",
+      "Цена": 1200,
+      "Производитель": "Тири-кеш",
+      "Дата производства": "10.01.2808"
+    });
+})
+
+test("Изменение произвольной записи", async () => {
+  const fields = await mockApi.putRecord("3", {
+      "id": "3",
+      "Товар": "Tralavelo Tralala",
+      "Цена": 450,
+      "Производитель": "Tiki toko && InstReels",
+      "Дата производства": "25.05.2005"
+    });
+  expect(fields).toEqual({
+      "id": "3",
+      "Товар": "Tralavelo Tralala",
+      "Цена": 450,
+      "Производитель": "Tiki toko && InstReels",
+      "Дата производства": "25.05.2005"
+    });
+  const beforeField = await mockApi.putRecord("3", {
+      "id": "3",
+      "Товар": "La policino",
+      "Цена": 86000,
+      "Производитель": "Italiano",
+      "Дата производства": "10.01.2808"
+    });
+  expect(beforeField).toEqual({
+      "id": "3",
+      "Товар": "La policino",
+      "Цена": 86000,
+      "Производитель": "Italiano",
+      "Дата производства": "10.01.2808"
+    });
 })

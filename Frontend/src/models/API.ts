@@ -86,13 +86,14 @@ export class Api extends BaseApi implements IApi{
     try {
       const deleteRecordUrl = this.Urls.deleteRecordUrl;
       const deletedRecord = await this.delete(`${deleteRecordUrl}${id}`, 'application/json');
+      console.log(deletedRecord)
       return deletedRecord;
     } catch(err) {
       return Promise.reject(err);
     }
   }
   
-  async putRecord(id: string, record: ApiRecord): Promise<unknown> {
+  async putRecord(id: string, record: ApiRecord): Promise<ApiRecord> {
     try {
       const putRecordUrl = this.Urls.putRecordUrl;
       const updatedRecord = await this.put(`${putRecordUrl}${id}`, 'application/json', record);

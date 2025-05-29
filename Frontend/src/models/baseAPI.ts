@@ -40,6 +40,7 @@ export abstract class BaseApi {
       }
     })
     .then((response) =>{
+      console.log(response)
       if(!response.ok) {
         return Promise.reject("Не загрузились данные")
       }
