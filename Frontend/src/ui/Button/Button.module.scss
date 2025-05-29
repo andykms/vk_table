@@ -1,0 +1,16 @@
+.button {
+  outline: none;
+  border: var(--outlines) 1px solid;
+  border-radius: 2.5px;
+  block-size: 50px;
+  inline-size: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.button:hover {
+  background-color: var(--outlines);
+}

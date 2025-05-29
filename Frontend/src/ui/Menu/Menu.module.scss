@@ -1,0 +1,19 @@
+.menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background-color: #fff;
+  border: var(--outlines) 1px solid;
+}
+
+.menuContent {
+  border-bottom: 1px solid var(--outlines);
+  list-style-type: none;
+}
+
+.menu:last-child {
+  border-bottom: none;
+}

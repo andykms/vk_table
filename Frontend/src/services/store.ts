@@ -1,5 +1,4 @@
-import { tableSlice } from "../types/TableReducer/TableSlice";
-import { combineSlices, configureStore } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import { tableReducer } from "../types/TableReducer/TableSlice";
 
 export const store = configureStore({

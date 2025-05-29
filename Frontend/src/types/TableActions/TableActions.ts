@@ -61,3 +61,4 @@ export const addTableRecord = createAsyncThunk(
     return response;
   }
 );
+

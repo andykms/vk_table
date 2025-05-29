@@ -4,7 +4,7 @@
 
 html,
 body {
-  font-family: 'OpenSans', sans-serif;
+  font-family: var(--main-font);
   display: flex;
   flex-direction: column;
   margin: auto;
