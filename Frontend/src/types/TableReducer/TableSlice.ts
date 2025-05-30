@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Api } from "../../models/API";
 import { MainApiUrls } from "../../constants/MainApiUrls";
-import { getTableFields, getTableRecord, putTableRecord, createTableField, deleteTableRecord, addTableRecord} from '../TableActions/TableActions';
+import { getTableFields, getTableRecord, putTableRecord, createTableField, deleteTableRecord, addTableRecord, getTenTableRecords, deleteField} from '../TableActions/TableActions';
 
 export interface ITableRecordState {
   id: string,
@@ -49,6 +49,7 @@ export const tableSlice = createSlice({
     getLoad: (state: ITableState) => state.loading,
     getError: (state: ITableState) => state.error,
   },
+  //TODO: как-то убрать все эти .addCase, чтобы не было лишнего кода, как-то много кода в Slice...
   extraReducers: (builder) => {
     builder
       //Получение полей
@@ -80,15 +81,15 @@ export const tableSlice = createSlice({
         state.error = "";
       })
       //Создание записи
-      .addCase(createTableField.fulfilled, (state, action) => {
+      .addCase(addTableRecord.fulfilled, (state, action) => {
         state.loading = false;
         state.error = "";
       })
-      .addCase(createTableField.rejected, (state, action) => {
+      .addCase(addTableRecord.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message?action.error.message:'';
       })
-      .addCase(createTableField.pending, (state) => {
+      .addCase(addTableRecord.pending, (state) => {
         state.loading = true;
         state.error = "";
       })
@@ -117,6 +118,48 @@ export const tableSlice = createSlice({
         state.error = action.error.message?action.error.message:'';
       })
       .addCase(putTableRecord.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      //Получение 10 записей
+      .addCase(getTenTableRecords.fulfilled, (state, action) => {
+        state.records = action.payload;
+        state.loading = false;
+        state.error = "";
+      })
+      .addCase(getTenTableRecords.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message?action.error.message:'';
+      })
+      .addCase(getTenTableRecords.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      //Создание нового поля (не записи!!!, это разные вещи!!!)
+      .addCase(createTableField.fulfilled, (state, action) => {
+        state.fields.push(action.payload as ITableFieldState);
+        state.loading = false;
+        state.error = "";
+      })
+      .addCase(createTableField.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message?action.error.message:'';
+      })
+      .addCase(createTableField.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      //Удаление поля
+      .addCase(deleteField.fulfilled, (state, action) => {
+        state.fields = state.fields.filter(field => field.id !== action.payload);
+        state.loading = false;
+        state.error = "";
+      })
+      .addCase(deleteField.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message?action.error.message:'';
+      })
+      .addCase(deleteField.pending, (state) => {
         state.loading = true;
         state.error = "";
       })

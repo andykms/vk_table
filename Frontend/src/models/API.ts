@@ -111,6 +111,5 @@ export class Api extends BaseApi implements IApi{
     } catch(err) {
       return Promise.reject(err);
     }
-
   }
 }

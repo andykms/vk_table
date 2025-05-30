@@ -62,3 +62,18 @@ export const addTableRecord = createAsyncThunk(
   }
 );
 
+export const getTenTableRecords = createAsyncThunk(
+  "table/getTenTableRecords",
+  async (id: string) => {
+    const response = await api.getPartyRecords(id, 10);
+    return response;
+  }
+);
+
+export const deleteField = createAsyncThunk(
+  "table/deleteField",
+  async (id: string) => {
+    const response = await api.deleteField(id);
+    return response;
+  }
+);
