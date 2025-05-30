@@ -2,7 +2,8 @@ import { Api } from "../models/API";
 import { TestApiUrls } from "../constants/TestApiUrls";
 
 
-
+//Используем отдельные URL и отдельную базу данных JSON-server для тестов (testdb.json)
+//(Для "прода" используем db.json)
 const mockApi = new Api(TestApiUrls);
 
 test("Получение полей", async () => {
@@ -116,4 +117,20 @@ test("Изменение произвольной записи", async () => {
 test('Получение 10 записей начиная с некоторой записи', async () => {
   const fields = await mockApi.getPartyRecords("85",10);
   expect(fields).toHaveLength(10);
+})
+
+test('Добавление поля и его удаление', async () => {
+  const fields = await mockApi.postField({
+      "id": "6",
+      "name": "Категория"
+    });
+  expect(fields).toEqual({
+      "id": "6",
+      "name": "Категория"
+    });
+  const deletedField = await mockApi.deleteField("6");
+  expect(deletedField).toEqual({
+      "id": "6",
+      "name": "Категория"
+  });
 })

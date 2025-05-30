@@ -49,7 +49,7 @@ export const tableSlice = createSlice({
     getLoad: (state: ITableState) => state.loading,
     getError: (state: ITableState) => state.error,
   },
-  //TODO: как-то убрать все эти .addCase, чтобы не было лишнего кода, как-то много кода в Slice...
+  //TODO: как-то зарефачить все эти .addCase, чтобы не было лишнего кода, как-то много кода в Slice...
   extraReducers: (builder) => {
     builder
       //Получение полей
