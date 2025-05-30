@@ -7,9 +7,9 @@ interface ApiField {
   name: string;
 }
 
-interface ApiRecord {
+interface PostedApiRecord {
   id: string;
-  [key: string]: string;
+  [key: string]: string|number|boolean|null;
 }
 
 const api = new Api(MainApiUrls);
@@ -48,7 +48,7 @@ export const deleteTableRecord = createAsyncThunk(
 
 export const putTableRecord = createAsyncThunk(
   "table/putTableRecord",
-  async (record: ApiRecord) => {
+  async (record: PostedApiRecord) => {
     const response = await api.putRecord(record.id, record);
     return response;
   }
@@ -56,7 +56,7 @@ export const putTableRecord = createAsyncThunk(
 
 export const addTableRecord = createAsyncThunk(
   "table/addTableRecord",
-  async (record: ApiRecord) => {
+  async (record: PostedApiRecord) => {
     const response = await api.postRecord(record);
     return response;
   }

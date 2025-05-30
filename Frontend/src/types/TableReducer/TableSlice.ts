@@ -5,7 +5,7 @@ import { getTableFields, getTableRecord, putTableRecord, createTableField, delet
 
 export interface ITableRecordState {
   id: string,
-  [key: string]: string|number|null,
+  [key: string]: string|number|null|boolean,
 }
 
 export interface ITableFieldState {
