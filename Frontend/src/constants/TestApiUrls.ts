@@ -1,15 +1,25 @@
 import { ApiUrls } from "../models/API";
-import dotenv from 'dotenv';
-dotenv.config({ path: '.env' }); 
+import {
+  API_TEST_GET_FIELDS,
+  API_TEST_GET_FIELD,
+  API_TEST_GET_TYPES,
+  API_TEST_POST_FIELD,
+  API_TEST_PUT_FIELD,
+  API_TEST_DELETE_FIELD,
+  API_TEST_GET_RECORD,
+  API_TEST_POST_RECORD,
+  API_TEST_PUT_RECORD,
+  API_TEST_DELETE_RECORD,
+} from '../../ApiUrls';
 
 export const TestApiUrls: ApiUrls = {
-  getFieldsUrl: process.env.API_TEST_GET_FIELDS,
-  getRecordUrl: process.env.API_TEST_GET_RECORD,
-  postRecordUrl: process.env.API_TEST_POST_RECORD,
-  putRecordUrl: process.env.API_TEST_PUT_RECORD,
-  deleteRecordUrl: process.env.API_TEST_DELETE_RECORD,
-  getTypesUrl: process.env.API_TEST_GET_TYPES,
-  postFieldUrl: process.env.API_TEST_POST_FIELD,
-  putFieldUrl: process.env.API_TEST_PUT_FIELD,
-  deleteFieldUrl: process.env.API_TEST_DELETE_FIELD
+  getFieldsUrl: API_TEST_GET_FIELDS,
+  getRecordUrl: API_TEST_GET_RECORD,
+  postRecordUrl: API_TEST_POST_RECORD,
+  putRecordUrl: API_TEST_PUT_RECORD,
+  deleteRecordUrl: API_TEST_DELETE_RECORD,
+  getTypesUrl: API_TEST_GET_TYPES,
+  postFieldUrl: API_TEST_POST_FIELD,
+  putFieldUrl: API_TEST_PUT_FIELD,
+  deleteFieldUrl: API_TEST_DELETE_FIELD
 };

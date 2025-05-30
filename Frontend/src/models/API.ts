@@ -104,6 +104,7 @@ export class Api extends BaseApi implements IApi{
   }
 
   async getPartyRecords(start: string, limit: number) {
+    console.log("New party records")
     try {
       const getPartyRecordsUrl = this.Urls.getRecordUrl;
       const partyRecords = await this.get(`${getPartyRecordsUrl}?_start=${start}&_limit=${limit.toString()}`, 'application/json');
