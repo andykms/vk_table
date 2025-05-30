@@ -12,4 +12,17 @@
   --record-spacing: 10px;
   --header-background-color: #fff;
   --outlines: #ccc;
+  --field-inline-size: 150px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --field-inline-size: 75px;
+  }
+} 
+
+@media (max-width: 1440px) {
+  :root {
+    --field-inline-size: 75px;
+  }
 }

@@ -1,0 +1,12 @@
+.field {
+  border: none;
+  outline: none;
+  block-size: 100%;
+  inline-size: var(--field-inline-size);
+  overflow: hidden;  
+  white-space: nowrap;  
+  text-overflow: ellipsis;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

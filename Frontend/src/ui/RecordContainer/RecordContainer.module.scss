@@ -1,0 +1,18 @@
+.recordContainer {
+  display: flex;
+  padding: 0 1rem;
+  block-size: 50px;
+  inline-size: 100%;
+  border: var(--outlines) 1px solid;
+  border-radius: 2.5px;
+  align-items: center;
+  gap: var(--record-spacing);
+}
+
+.recordContainer:nth-child(n) {
+  border-right: var(--outlines) 1px solid;
+}
+
+.recordContainer:last-child {
+  border-right: none;
+}

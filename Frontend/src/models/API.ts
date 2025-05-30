@@ -102,4 +102,15 @@ export class Api extends BaseApi implements IApi{
       return Promise.reject(err);
     }
   }
+
+  async getPartyRecords(start: string, limit: number) {
+    try {
+      const getPartyRecordsUrl = this.Urls.getRecordUrl;
+      const partyRecords = await this.get(`${getPartyRecordsUrl}?_start=${start}&_limit=${limit.toString()}`, 'application/json');
+      return partyRecords;
+    } catch(err) {
+      return Promise.reject(err);
+    }
+
+  }
 }

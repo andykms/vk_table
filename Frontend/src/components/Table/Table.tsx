@@ -1,0 +1,1 @@
+import style from './Table.module.scss';

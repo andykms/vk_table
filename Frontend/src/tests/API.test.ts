@@ -1,22 +1,9 @@
-import { Api, ApiUrls} from "../models/API";
-import dotenv from 'dotenv';
+import { Api } from "../models/API";
+import { TestApiUrls } from "../constants/TestApiUrls";
 
-dotenv.config({ path: '.env' }); 
 
-const url: ApiUrls = {
-  getFieldsUrl: process.env.API_GET_FIELDS,
-  getRecordUrl: process.env.API_GET_RECORD,
-  postRecordUrl: process.env.API_POST_RECORD,
-  putRecordUrl: process.env.API_PUT_RECORD,
-  deleteRecordUrl: process.env.API_DELETE_RECORD,
-  getTypesUrl: process.env.API_GET_TYPES,
-  postFieldUrl: process.env.API_POST_FIELD,
-  putFieldUrl: process.env.API_PUT_FIELD,
-  deleteFieldUrl: process.env.API_DELETE_FIELD
-};
 
-const mockApi = new Api(url);
-
+const mockApi = new Api(TestApiUrls);
 
 test("Получение полей", async () => {
   const fields = await mockApi.getFields();
@@ -40,6 +27,10 @@ test("Получение полей", async () => {
         { 
           "id": "4",
           "name": "Дата производства"
+        },
+        {
+          "id": "5",
+          "name": "Категория"
         }
   ]);
 })
@@ -55,73 +46,74 @@ test("Получение типов", async () => {
   ]);
 })
 
-test("Получение первой записи", async () => {
-  const fields = await mockApi.getRecord("0");
-  expect(fields).toEqual({
-      "id": "0",
-      "Товар": "Блокатор берибанка-онлайн",
-      "Цена": 1,
-      "Производитель": "ПАО Тири-банк",
-      "Дата производства": "19.12.3018"
-    });
-})
-
 test("Получение произвольной записи", async () => {
-  const fields = await mockApi.getRecord("2");
+  const fields = await mockApi.getRecord("102");
   expect(fields).toEqual({
-      "id": "2",
-      "Товар": "Голограмма музыки",
-      "Цена": 9999,
-      "Производитель": "Берзвук",
-      "Дата производства": "11.07.2901"
+      "id": "102",
+      "Товар": "Мега карта от берибанка",
+      "Цена": 1000,
+      "Производитель": "ПАО Берибанк",
+      "Дата производства": "19.12.3018",
+      "Категория": "Платежные сервисы"
     });
 })
 
 test("Удаление и добавление произвольной записи", async () => {
-  const fields = await mockApi.deleteRecord("5");
+  const fields = await mockApi.deleteRecord("104");
+  //Добавляем обратно, чтобы следующие тесты не фэилились
   await mockApi.postRecord({
-      "id": "5",
-      "Товар": "Кешбек Тири-банка 1000 рублей",
-      "Цена": 1200,
-      "Производитель": "Тири-кеш",
-      "Дата производства": "10.01.2808"
+      "id": "104",
+      "Товар": "La policino",
+      "Цена": 86000,
+      "Производитель": "Italiano",
+      "Дата производства": "10.01.2808",
+      "Категория": "Защитные средства"
     });
+  //Проверяем первый объект, перед добавлением нового
   expect(fields).toEqual({
-      "id": "5",
-      "Товар": "Кешбек Тири-банка 1000 рублей",
-      "Цена": 1200,
-      "Производитель": "Тири-кеш",
-      "Дата производства": "10.01.2808"
+      "id": "104",
+      "Товар": "La policino",
+      "Цена": 86000,
+      "Производитель": "Italiano",
+      "Дата производства": "10.01.2808",
+      "Категория": "Защитные средства"
     });
 })
 
 test("Изменение произвольной записи", async () => {
-  const fields = await mockApi.putRecord("3", {
-      "id": "3",
+  const fields = await mockApi.putRecord("105", {
+      "id": "105",
       "Товар": "Tralavelo Tralala",
       "Цена": 450,
       "Производитель": "Tiki toko && InstReels",
       "Дата производства": "25.05.2005"
     });
   expect(fields).toEqual({
-      "id": "3",
+      "id": "105",
       "Товар": "Tralavelo Tralala",
       "Цена": 450,
       "Производитель": "Tiki toko && InstReels",
       "Дата производства": "25.05.2005"
     });
-  const beforeField = await mockApi.putRecord("3", {
-      "id": "3",
-      "Товар": "La policino",
-      "Цена": 86000,
-      "Производитель": "Italiano",
-      "Дата производства": "10.01.2808"
+  const beforeField = await mockApi.putRecord("105", {
+      "id": "105",
+      "Товар": "АКЦИЯ Бонусы берпазиба 1000 рублей",
+      "Цена": 1500,
+      "Производитель": "Берпазиба",
+      "Дата производства": "09.01.2808",
+      "Категория": "Платежные сервисы"
     });
   expect(beforeField).toEqual({
-      "id": "3",
-      "Товар": "La policino",
-      "Цена": 86000,
-      "Производитель": "Italiano",
-      "Дата производства": "10.01.2808"
+      "id": "105",
+      "Товар": "АКЦИЯ Бонусы берпазиба 1000 рублей",
+      "Цена": 1500,
+      "Производитель": "Берпазиба",
+      "Дата производства": "09.01.2808",
+      "Категория": "Платежные сервисы"
     });
+})
+
+test('Получение 10 записей начиная с некоторой записи', async () => {
+  const fields = await mockApi.getPartyRecords("85",10);
+  expect(fields).toHaveLength(10);
 })

@@ -1,4 +1,6 @@
 import { ApiUrls } from "../models/API";
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env' }); 
 
 export const MainApiUrls: ApiUrls = {
   getFieldsUrl: process.env.API_GET_FIELDS,
