@@ -3,6 +3,8 @@ import { Api } from "../../models/API";
 import { MainApiUrls } from "../../constants/MainApiUrls";
 import { getTableFields, getTableRecord, putTableRecord, createTableField, deleteTableRecord, addTableRecord, getTenTableRecords, deleteField} from '../TableActions/TableActions';
 import { get } from "http";
+import { FormFieldPayload } from "../Form/FormField";
+
 
 export interface ITableRecordState {
   id: string,
@@ -19,6 +21,10 @@ export interface ITableRecordPayload {
   id: string,
 }
 
+export interface AddRecordFormField extends FormFieldPayload {
+  type: string,
+}
+
 export interface ITableState {
   records: ITableRecordState[],
   fields: ITableFieldState[],
@@ -26,6 +32,11 @@ export interface ITableState {
   error: string,
   recordsCount: number,
   hasMore: boolean,
+  formAddRecord: FormRecordData,
+}
+
+export interface FormRecordData {
+  [key: string]: string,
 }
 
 export const initialState: ITableState = {
@@ -35,6 +46,7 @@ export const initialState: ITableState = {
   error: "",
   recordsCount: 0,
   hasMore: true,
+  formAddRecord: {},
 }
 
 export const tableSlice = createSlice({
@@ -46,6 +58,9 @@ export const tableSlice = createSlice({
     },
     deleteRecord: (state, action: PayloadAction<string>) => {
       state.records = state.records.filter(record => record.id !== action.payload)
+    },
+    setFormAddRecord: (state, action: PayloadAction<AddRecordFormField>) => {
+      state.formAddRecord[action.payload.name] = action.payload.value;
     },
   },
   selectors: {

@@ -7,11 +7,11 @@ export interface FieldProps {
 }
 
 export const Field = (props: FieldProps) => {
-  const { value } = props;
+  const { value, onClick } = props;
   
   return (
-    <button className={styles.field}>
-      <span className={styles.label}>{value}</span>
-    </button>
+    <div className={styles.field}>
+      <p className={styles.label}> {value} </p>
+    </div>
   )
 }

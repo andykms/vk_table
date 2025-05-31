@@ -20,13 +20,13 @@ interface InfiniteTableProps {
   loader: React.ReactNode;
   endMessage?: React.ReactNode;
   onLoadMore: (lastRecord: string) => void;
-  onClick: (recordField: clickedRecordField) => void;
+  onClickRecord: (record: InfiniteTableRecord) => void;
   hasMore: boolean;
   lastRecord: string;
 }
 
 export const InfiniteTable = (props: InfiniteTableProps) => {
-  const { records, fields, loader, onLoadMore, onClick, hasMore, lastRecord } = props;
+  const { records, fields, loader, onLoadMore, onClickRecord, hasMore, lastRecord } = props;
 
   const loadMore = () => {
     onLoadMore(lastRecord);
@@ -40,7 +40,7 @@ export const InfiniteTable = (props: InfiniteTableProps) => {
       loader={loader}
       endMessage={props.endMessage}
     >
-      <Table records={records} fields={fields} onClick={onClick}/>
+      <Table records={records} fields={fields} onClickRecord={onClickRecord}/>
     </InfiniteScroll>
   );
 }

@@ -2,11 +2,12 @@
   display: flex;
   padding: 0 1rem;
   block-size: 50px;
-  inline-size: 100%;
+  inline-size: auto;
   border: var(--outlines) 1px solid;
-  border-radius: 2.5px;
-  align-items: center;
+  border-radius: 15px;
+  gap:15px;
   gap: var(--record-spacing);
+  cursor: pointer;
 }
 
 .recordContainer:nth-child(n) {

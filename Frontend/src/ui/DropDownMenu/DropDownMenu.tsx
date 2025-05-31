@@ -13,11 +13,11 @@ export const DropDownMenu = (props: DropDownMenuProps) => {
   const { menusElements, menuTitle } = props;
   const [isOpen, setIsOpen] = useState(false);
   return (
-  <>
+  <div className={style.DropDownMenu}>
     <Button onClick={() => setIsOpen(!isOpen)}>{menuTitle}</Button>
     <div className={style.menuContainer}>
       <Menu menusElements={menusElements} isOpen={isOpen} />
     </div>
-  </>
+  </div>
   );
 };

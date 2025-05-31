@@ -1,12 +1,20 @@
 .field {
-  border: none;
-  outline: none;
   block-size: 100%;
   inline-size: var(--field-inline-size);
-  overflow: hidden;  
-  white-space: nowrap;  
-  text-overflow: ellipsis;  
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 1rem;
 }
+
+.label {
+  font-size: var(--field-font-size);
+  color: var(--field-color);
+  overflow: hidden;  
+  text-align: center;
+  white-space: nowrap;  
+  text-overflow: ellipsis; 
+  border: none;
+  outline: none;
+}
+

@@ -1,5 +1,5 @@
 import { RootState, AppDispatch } from "../services/store"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTenTableRecords, getTableFields } from "../types/TableActions/TableActions";
 import { getRecords, getFields, getRecordsCount, getHasMore } from "../types/TableReducer/TableSlice";
@@ -7,6 +7,10 @@ import { ApiRecord } from "../types/API/records";
 import { ApiField } from "../types/API/fields";
 import { Loader } from "../ui/Loader/Loader";
 import { InfiniteTable } from "./InfiniteTable/InfiniteTable";
+import { TableHeader } from "./TableHeader/TableHeader";
+import { DropMenus } from "../componentsParams/TableHeaderParams";
+import { Modal } from "../ui/Modal/Modal";
+
 
 export const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,6 +18,13 @@ export const App = () => {
   const Records = useSelector<RootState, ApiRecord[]>(getRecords);
   const Fields = useSelector<RootState, ApiField[]>(getFields);
   const hasMore = useSelector<RootState, boolean>(getHasMore);
+  const [isOpenModal, setOpenModal] = useState(false);
+
+
+
+  const onCloseModal = () => {
+    setOpenModal(false);
+  }
 
   useEffect(() => {
     dispatch(getTableFields());
@@ -24,9 +35,16 @@ export const App = () => {
     dispatch(getTenTableRecords(start))
   }
 
+  const onClickRecord = (record: ApiRecord) => {
+    
+  }
+
   return (
     <div>
-      <InfiniteTable hasMore= {hasMore} lastRecord = {RecordsCount.toString()} records={Records} fields={Fields} onLoadMore={loadMore} loader={<Loader/>} onClick={()=>{}}/>
+      <Modal isOpen={isOpenModal} onClose={onCloseModal} content={<></>}>
+      </Modal>
+      <TableHeader DropMenus={DropMenus}/>
+      <InfiniteTable hasMore= {hasMore} lastRecord = {RecordsCount.toString()} records={Records} fields={Fields} onLoadMore={loadMore} loader={<Loader/>} onClickRecord={onClickRecord}/>
     </div>
   )
 }

@@ -2,10 +2,6 @@ import style from './Table.module.scss';
 import { Field } from '../../ui/Field/Field';
 import { RecordContainer } from '../../ui/RecordContainer/RecordContainer';
 
-
-//import { getRecords } from '../../types/TableReducer/TableSlice';
-//import { UseSelector } from 'react-redux';
-
 export interface TableField {
   id: string;
   name: string;
@@ -24,11 +20,11 @@ export interface clickedRecordField {
 export interface TableProps {
   fields: TableField[];
   records: TableRecord[];
-  onClick: (recordField: clickedRecordField) => void;
+  onClickRecord: (record: TableRecord) => void;
 }
 
 export const Table = (props: TableProps) => {
-  const { fields, records, onClick } = props;
+  const { fields, records, onClickRecord } = props;
   const fieldsNames = fields.map((field)=>field.name);
   const recordsList = records.map((record)=>{
     let resultRecord: TableRecord = {
@@ -49,15 +45,12 @@ export const Table = (props: TableProps) => {
       {
         recordsList.map((record)=>{
           const fields = Object.keys(record).map((key)=>{
-            const onClickField = () => {
-              onClick({id: record.id, name: key});
-            };
             return ({
               id: key,
-              element:<Field key={key} onClick={onClickField}value={record[key] ? record[key].toString() : "null"} />
+              element:<Field key={key} onClick={()=>{}}value={record[key] ? record[key].toString() : "null"} />
             });
           })
-          return <RecordContainer key={record.id} fields={fields} />
+          return <RecordContainer key={record.id} fields={fields} onClickContainer={()=>onClickRecord(record)}/>
         })
       }
     </section>

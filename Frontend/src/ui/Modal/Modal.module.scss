@@ -1,0 +1,19 @@
+.overlay {
+  position: fixed;
+  z-index: 1000;
+  inline-size: 100%;
+  block-size: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  filter: grayscale(80%);
+}
+
+.modal {
+  min-inline-size: 500px;
+  min-block-size: 500px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;;
+}
