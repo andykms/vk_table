@@ -38,6 +38,9 @@ API расположен в:
 
 ```src/models/API.ts```
 
+Основной файл db.json для JSON-server:
+
+```db.json```
 
 # State
 
