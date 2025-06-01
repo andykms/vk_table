@@ -86,3 +86,19 @@ export const deleteField = createAsyncThunk(
     return response;
   }
 );
+
+export const getTableLength = createAsyncThunk(
+  "table/getTableLength",
+  async () => {
+    const response = await api.getLength();
+    return response;
+  }
+);
+
+export const putTableLength = createAsyncThunk(
+  "table/putTableLength",
+  async (length: number) => {
+    const response = await api.putLength(length);
+    return response;
+  }
+);

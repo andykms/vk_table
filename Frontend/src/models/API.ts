@@ -15,6 +15,7 @@ export interface ApiUrls {
   postRecordUrl: string;
   putRecordUrl: string;
   deleteRecordUrl: string;
+  getLengthUrl: string;
 }
 
 export class Api extends BaseApi implements IApi{
@@ -62,7 +63,7 @@ export class Api extends BaseApi implements IApi{
     }
   }
 
-  async postRecord(record: ApiRecord): Promise<unknown> {
+  async postRecord(record: ApiRecord): Promise<ApiRecord> {
     try {
       const postRecordUrl = this.Urls.postRecordUrl;
       const newRecord = await this.post(postRecordUrl, 'application/json', record);
@@ -104,11 +105,31 @@ export class Api extends BaseApi implements IApi{
   }
 
   async getPartyRecords(start: string, limit: number) {
-    console.log("New party records")
     try {
       const getPartyRecordsUrl = this.Urls.getRecordUrl;
       const partyRecords = await this.get(`${getPartyRecordsUrl}?_start=${start}&_limit=${limit.toString()}`, 'application/json');
       return partyRecords;
+    } catch(err) {
+      return Promise.reject(err);
+    }
+  }
+  async getLength() {
+    try {
+      const getLengthUrl = this.Urls.getLengthUrl;
+      const length = await this.get(`${getLengthUrl}`, 'application/json');
+      return length;
+    } catch(err) {
+      return Promise.reject(err);
+    }
+  }
+
+  async putLength(length: number) {
+    try {
+      const putLengthUrl = this.Urls.getLengthUrl;
+      const newLength = await this.put(`${putLengthUrl}`, 'application/json', {length: length,
+        id: "0",
+      });
+      return newLength;
     } catch(err) {
       return Promise.reject(err);
     }

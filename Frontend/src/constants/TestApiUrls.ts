@@ -10,6 +10,7 @@ import {
   API_TEST_POST_RECORD,
   API_TEST_PUT_RECORD,
   API_TEST_DELETE_RECORD,
+  API_TEST_GET_LENGTH
 } from '../../ApiUrls';
 
 export const TestApiUrls: ApiUrls = {
@@ -21,5 +22,6 @@ export const TestApiUrls: ApiUrls = {
   getTypesUrl: API_TEST_GET_TYPES,
   postFieldUrl: API_TEST_POST_FIELD,
   putFieldUrl: API_TEST_PUT_FIELD,
-  deleteFieldUrl: API_TEST_DELETE_FIELD
+  deleteFieldUrl: API_TEST_DELETE_FIELD,
+  getLengthUrl: API_TEST_GET_LENGTH,
 };

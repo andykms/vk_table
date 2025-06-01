@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Api } from "../../models/API";
 import { MainApiUrls } from "../../constants/MainApiUrls";
-import { getTableFields, getTableRecord, putTableRecord, createTableField, deleteTableRecord, addTableRecord, getTenTableRecords, deleteField, getTableTypes} from '../TableActions/TableActions';
+import { getTableFields, getTableRecord, putTableRecord, createTableField, deleteTableRecord, addTableRecord, getTenTableRecords, deleteField, getTableTypes, getTableLength, putTableLength} from '../TableActions/TableActions';
 import { get } from "http";
-import { FormFieldPayload } from "../Form/FormFieldPayload";
 
 
 export interface ITableType {
@@ -26,10 +25,6 @@ export interface ITableRecordPayload {
   id: string,
 }
 
-export interface AddRecordFormField extends FormFieldPayload {
-  type: "string"|"number"|"boolean"|"null",
-}
-
 export interface AddRecordFormPayload {
   name: string,
   value: string,
@@ -44,6 +39,7 @@ export interface ITableState {
   recordsCount: number,
   hasMore: boolean,
   formAddRecord: FormRecordData,
+  length: number,
 }
 
 //
@@ -54,6 +50,7 @@ export interface FormRecordData {
 
 //В форме у каждой записи будет выбор типа
 export interface FormAddRecord {
+  name: string;
   value: string;
   type: string;
 }
@@ -67,6 +64,7 @@ export const initialState: ITableState = {
   recordsCount: 0,
   hasMore: true,
   formAddRecord: {},
+  length: 0,
 }
 
 export const tableSlice = createSlice({
@@ -82,7 +80,7 @@ export const tableSlice = createSlice({
     setFormAddRecordValue: (state, action: PayloadAction<AddRecordFormPayload>) => {
       state.formAddRecord[action.payload.name].value = action.payload.value;
     },
-    setFormAddRecordType: (state, action: PayloadAction<AddRecordFormField>) => {
+    setFormAddRecordType: (state, action: PayloadAction<AddRecordFormPayload>) => {
       state.formAddRecord[action.payload.name].type = action.payload.value;
     },
     setFormAddRecord: (state, action: PayloadAction<FormRecordData>) => {
@@ -98,6 +96,7 @@ export const tableSlice = createSlice({
     getHasMore: (state: ITableState) => state.hasMore,
     getTypes: (state: ITableState) => state.types,
     getFormAddRecord: (state: ITableState) => state.formAddRecord,
+    getLength: (state: ITableState) => state.length,
   },
   //TODO: как-то зарефачить все эти .addCase, чтобы не было лишнего кода, как-то много кода в Slice...
   extraReducers: (builder) => {
@@ -136,6 +135,7 @@ export const tableSlice = createSlice({
       .addCase(addTableRecord.fulfilled, (state, action) => {
         state.loading = false;
         state.recordsCount+=1;
+        state.records.push(action.payload);
         state.error = "";
       })
       .addCase(addTableRecord.rejected, (state, action) => {
@@ -237,9 +237,37 @@ export const tableSlice = createSlice({
         state.loading = true;
         state.error = "";
       })
+      //Получение длины таблицы
+      .addCase(getTableLength.fulfilled, (state, action) => {
+        state.length = action.payload.length;
+        state.loading = false;
+        state.error = "";
+      })
+      .addCase(getTableLength.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message?action.error.message:'';
+      })
+      .addCase(getTableLength.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      //Изменение длины
+      .addCase(putTableLength.fulfilled, (state, action) => {
+        state.length = action.payload.length;
+        state.loading = false;
+        state.error = "";
+      })
+      .addCase(putTableLength.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message?action.error.message:'';
+      })
+      .addCase(putTableLength.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
   },
 })
 
-export const {getRecords, getFields, getLoad, getError, getRecordsCount, getHasMore, getTypes, getFormAddRecord } = tableSlice.selectors;
+export const {getRecords, getFields, getLoad, getError, getRecordsCount, getHasMore, getTypes, getFormAddRecord, getLength } = tableSlice.selectors;
 export const tableReducer = tableSlice.reducer;
 export const tableActions = tableSlice.actions;

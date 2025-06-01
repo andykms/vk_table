@@ -13,7 +13,6 @@ import { createDropMenus } from "../utils/createDropMenus";
 import { Modal } from "../ui/Modal/Modal";
 import { AddRecordForm } from "./AddRecordForm/AddRecordForm";
 import { createValidationsRules } from "../utils/createValidationsRules";
-import { FormFieldPayload } from "../types/Form/FormFieldPayload";
 import { FormFieldAddRecord } from "../types/Form/FormFieldAddRecord";
 import { FormValidation } from "../types/Form/FormValidationTypes";
 import { getTypes } from "../types/TableReducer/TableSlice";
@@ -26,7 +25,9 @@ import { getFormAddRecord } from "../types/TableReducer/TableSlice";
 import { FormAddRecord } from "../types/TableReducer/TableSlice";
 import { FormRecordData } from "../types/TableReducer/TableSlice";
 import { tableActions } from "../types/TableReducer/TableSlice";
-
+import { getLength } from "../types/TableReducer/TableSlice";
+import { putTableLength } from "../types/TableActions/TableActions";
+import { getTableLength } from "../types/TableActions/TableActions";
 
 export const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -37,10 +38,10 @@ export const App = () => {
   const Types = useSelector<RootState, ApiType[]>(getTypes);
   const isLoad = useSelector<RootState, boolean>(getLoad);
   const formAddRecordData = useSelector<RootState, FormRecordData>(getFormAddRecord);
+  const tableLength = useSelector<RootState, number>(getLength);
   const [isOpenModal, setOpenModal] = useState(false);
   const [validations, setValidations] = useState<FormValidation>({});
   const [modalContent, setModalContent] = useState(<></>);
-  const [formFields, setFormFields] = useState<FormFieldAddRecord[]>([]);
 
   useEffect(() => {
     dispatch(getTableTypes())
@@ -48,27 +49,22 @@ export const App = () => {
 
   useEffect(() => {
     if(Types && Types.length > 0) {
-      setFormFields(Fields.map((field) => {
-        return {
-        type: Types[0].type,
-        name: field.name,
-      }}).filter((field) => field.name !== "id"));
-      setValidations(createValidationsRules(formFields));
-      const formData: FormRecordData = {};
-      Fields.forEach((field) => {
-        formData[field.name] = {
+        const formFields: FormRecordData = {};
+        
+        Fields.forEach(field => (
+        formFields[field.name] = {
+          name: field.name,
           type: Types[0].type,
-          value: "",
-        }
-      });
-      dispatch(tableActions.setFormAddRecord(formData))
+          value: '',
+        }));
+        dispatch(tableActions.setFormAddRecord(formFields));
     }
   }, [Fields])
 
 
   useEffect(() => {
-    setValidations(createValidationsRules(formFields));
-  }, [formFields]);
+    setValidations(createValidationsRules(formAddRecordData));
+  }, [formAddRecordData]);
 
   const onCloseModal = () => {
     setOpenModal(false);
@@ -76,6 +72,10 @@ export const App = () => {
 
   useEffect(() => {
     dispatch(getTableFields());
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(getTableLength());
   }, [dispatch])
 
   useEffect(() => {
@@ -87,22 +87,25 @@ export const App = () => {
 
 
   const onChooseType = (type: ApiType, field: FormFieldAddRecord) => {
-    setFormFields(prevFields => 
-    prevFields.map(f => 
-      f.name === field.name 
-        ? { ...f, type: type.type } // Создаем новый объект!
-        : f
-    )
+    dispatch(tableActions.setFormAddRecordType({
+      name: field.name,
+      value: type.type,
+    })
   );
   }
 
   const onSubmitAddRecord= (data: FormData) => {
-    console.log(data);
+    const obData: {[key in string]: string} = {};
+    Object.keys(data).forEach(key => {
+      if(key!=='id' && data[key].name !== 'id') obData[data[key].name] = data[key].value;
+    });
+    console.log(tableLength)
     const newRecord: ApiRecord = {
-      id:(RecordsCount + 1).toString(),
-      ...data
+      id:(tableLength + 1).toString(),
+      ...obData,
     };
     dispatch(addTableRecord(newRecord));
+    dispatch(putTableLength(tableLength + 1));
   }
 
   const onClickRecord = (record: ApiRecord) => {
@@ -117,13 +120,7 @@ export const App = () => {
   const loadMore = (start: string) => {
     dispatch(getTenTableRecords(start));
   }
-  const inputRef = useRef<HTMLInputElement>(null);
-  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('Uraura')
-    if(inputRef.current)  {
-      inputRef.current.value = e.target.value;
-    }
-  }
+
   const onChangeFormAddRecord = (field: string, value: string) => {
     dispatch(tableActions.setFormAddRecordValue({
       name: field,
@@ -133,7 +130,7 @@ export const App = () => {
 
   return (
     <>
-      <Modal isOpen={isOpenModal} onClose={onCloseModal} content={<AddRecordForm onChange={onChangeFormAddRecord} formData= {formAddRecordData} onSubmit={onSubmitAddRecord} validations={validations} fields={formFields} types={Types} onChooseType={onChooseType}/>}>
+      <Modal isOpen={isOpenModal} onClose={onCloseModal} content={<AddRecordForm onChange={onChangeFormAddRecord} formData= {formAddRecordData} onSubmit={onSubmitAddRecord} validations={validations}  types={Types} onChooseType={onChooseType}/>}>
       </Modal>
       <TableHeader DropMenus={createDropMenus({
         menuTitle: "Опции",

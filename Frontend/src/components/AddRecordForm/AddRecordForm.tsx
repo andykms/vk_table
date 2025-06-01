@@ -9,6 +9,7 @@ import { SelectList } from "../../ui/SelectList/SelectList";
 
 interface FormFieldAddRecord {
   name: string,
+  value: string,
   type: string,
 }
 
@@ -20,12 +21,13 @@ export interface FormType {
 interface FormData {
   [key: string]: {
     value: string,
+    type: string,
+    name: string,
   },
 }
 
 export interface AddRecordFormProps {
   formData: FormData,
-  fields: FormFieldAddRecord[],
   types: FormType[],
   onSubmit: (data: FormData) => void;
   validations: FormValidation,
@@ -35,18 +37,17 @@ export interface AddRecordFormProps {
 
 
 export const AddRecordForm = (props: AddRecordFormProps) => {
-  const { fields, types, onSubmit, onChooseType, validations, formData, onChange } = props;
+  const { types, onSubmit, onChooseType, validations, formData, onChange } = props;
 
   const onClickType = (type: FormType, field: FormFieldAddRecord) => {
     onChooseType(type, field);
   }
 
-  const chooseType = fields.map((field)=>{
+  const chooseType = Object.keys(formData).map((field)=>{
         const typesElements = types.map((type)=>{
-          console.log(field.type, type.type)
-          return <Button key = {`TYPE_${field.name}_${type.type}}`}isChoosen={field.type == type.type} onClick={()=>onClickType(type,field)}>{type.type}</Button>
+          return <Button key = {`TYPE_${formData[field].name}_${type.type}}`}isChoosen={formData[field].type == type.type} onClick={()=>onClickType(type,formData[field])}>{type.type}</Button>
         })
-        return <DropDownMenu menuTitle={field.name} menusElements={typesElements} key={`DROPDOWN_${field.name}`} uniqueKey={field.name}/>
+        return <DropDownMenu menuTitle={formData[field].name} menusElements={typesElements} key={`DROPDOWN_${formData[field].name}`} uniqueKey={formData[field].name}/>
       })
 
   return (
@@ -56,7 +57,7 @@ export const AddRecordForm = (props: AddRecordFormProps) => {
       <section className={style.chooseTypesSection}>
       {chooseType}
       </section>
-      <Form onChange={onChange}values={formData} buttonSubmitText={'Добавить'} onSubmit={onSubmit} fields={fields.map((field)=>field.name)} validations={validations}>
+      <Form onChange={onChange} buttonSubmitText={'Добавить'} onSubmit={(data: FormData)=>onSubmit(data)} fields={formData} validations={validations}>
       </Form>
     </>
   )

@@ -12,21 +12,23 @@ export interface FormValidation {
 }
 
 export interface Field {
-	name: string
-	type: string
+	[key: string]: {
+		name: string,
+		type: string
+	};
 }
 
-export const createValidationsRules = (fields: Field[]): FormValidation => {
+export const createValidationsRules = (fields: Field): FormValidation => {
 	let validations: FormValidation = {}
 
-	fields.forEach((field) => {
-    if(!validations[field.name]) validations[field.name] = [];
-		validations[field.name].push({
+	Object.keys(fields).forEach((field) => {
+    if(!validations[field]) validations[field] = [];
+		validations[field].push({
 			validate: (value: string) => {
 				if (value.length === 0) {
 					return 'Необходимо заполнить поле'
 				}
-				switch (field.type) {
+				switch (fields[field].type) {
 					case 'float':
 						return FLOAT_TYPE_REGEX.test(value)
 							? true
@@ -45,7 +47,7 @@ export const createValidationsRules = (fields: Field[]): FormValidation => {
 						return true
 				}
 			},
-			name: field.name,
+			name: fields[field].name,
 		})
 	})
 	return validations

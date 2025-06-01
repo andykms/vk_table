@@ -10,6 +10,7 @@ import {
   API_POST_RECORD,
   API_PUT_RECORD,
   API_DELETE_RECORD,
+  API_GET_LENGTH
 } from '../../ApiUrls';
 
 
@@ -22,5 +23,6 @@ export const MainApiUrls: ApiUrls = {
   getTypesUrl: API_GET_TYPES,
   postFieldUrl: API_POST_FIELD,
   putFieldUrl: API_PUT_FIELD,
-  deleteFieldUrl: API_DELETE_FIELD
+  deleteFieldUrl: API_DELETE_FIELD,
+  getLengthUrl: API_GET_LENGTH,
 };

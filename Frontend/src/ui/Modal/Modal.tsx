@@ -13,7 +13,7 @@ export interface ModalProps {
 
 export const Modal = ({ content, onClose, isOpen }: ModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
-
+  const overlayRef = useRef<HTMLDivElement>(null);
   const onKeydown = (event: KeyboardEvent) => {
     event.preventDefault();
     if (event.key === 'Escape') {
@@ -30,13 +30,17 @@ export const Modal = ({ content, onClose, isOpen }: ModalProps) => {
     } else {
       document.body.style.overflow = "auto"
     }
+    if (modalRef.current && overlayRef.current) {
+        const scrollY = window.scrollY;
+        modalRef.current.style.top = `${scrollY + window.innerHeight / 2}px`;
+    }
   }, [isOpen])
   
   return (
     isOpen ?
     <>
-      <div className={style.overlay} ref={modalRef}></div>
-      <div className={style.modal}>
+      <div className={style.overlay} ref={overlayRef}></div>
+      <div className={style.modal} ref= {modalRef}>
         {content}
       <div className={style.closeButton}>
         <Button onClick={onClose}>Назад</Button>
