@@ -40,11 +40,11 @@ export const Modal = ({ content, onClose, isOpen }: ModalProps) => {
     isOpen ?
     <>
       <div className={style.overlay} ref={overlayRef}></div>
-      <div className={style.modal} ref= {modalRef}>
-        {content}
-      <div className={style.closeButton}>
-        <Button onClick={onClose}>Назад</Button>
-      </div>
+      <div className={style.modal} ref= {modalRef}>   
+        <div className={style.closeButton}>
+          <Button onClick={onClose}>Назад</Button>
+        </div>
+          {content}
       </div>
     </> : null
   );

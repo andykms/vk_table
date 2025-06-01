@@ -81,7 +81,6 @@ export const App = () => {
   useEffect(() => {
     dispatch(getTenTableRecords("0"));
     return ()=>{
-
     }
   }, [dispatch])
 
@@ -106,6 +105,7 @@ export const App = () => {
     };
     dispatch(addTableRecord(newRecord));
     dispatch(putTableLength(tableLength + 1));
+    setOpenModal(false);
   }
 
   const onClickRecord = (record: ApiRecord) => {
