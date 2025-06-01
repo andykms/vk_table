@@ -42,6 +42,8 @@ export function Form(props: FormProps) {
       const result = test.validate(evt.target.value);
       if(typeof result === "string") {
         setErrors({...errors, [field]: result});
+      } else {
+        setErrors({...errors, [field]: ''});
       }
     });
     console.log(errors)
