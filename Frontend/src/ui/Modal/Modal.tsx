@@ -15,7 +15,6 @@ export const Modal = ({ content, onClose, isOpen }: ModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const onKeydown = (event: KeyboardEvent) => {
-    event.preventDefault();
     if (event.key === 'Escape') {
       window.removeEventListener('keydown', onKeydown);
       onClose();

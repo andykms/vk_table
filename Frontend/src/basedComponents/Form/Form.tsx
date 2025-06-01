@@ -44,7 +44,6 @@ export function Form(props: FormProps) {
     });
     onChange(field, evt.target.value);
   }
-  console.log('')
   return (
     <form className={style.form}>
       {

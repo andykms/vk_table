@@ -1,6 +1,7 @@
 import style from './Table.module.scss';
 import { Field } from '../../ui/Field/Field';
 import { RecordContainer } from '../../ui/RecordContainer/RecordContainer';
+import { set } from 'react-hook-form';
 
 export interface TableField {
   id: string;
@@ -26,7 +27,9 @@ export interface TableProps {
 export const Table = (props: TableProps) => {
   const { fields, records, onClickRecord } = props;
   const fieldsNames = fields.map((field)=>field.name);
-  const recordsList = records.map((record)=>{
+  const keys = new Set();
+  let recordsList: TableRecord[] = [];
+  for(let record of records) {
     let resultRecord: TableRecord = {
       id: record.id,
     };
@@ -37,21 +40,25 @@ export const Table = (props: TableProps) => {
         resultRecord[name] = "null";
       }
     }
-    return resultRecord;
-  })
-  
+    recordsList.push(resultRecord);
+  }
   return (
     <section className={style.table}>
       {
         recordsList.map((record)=>{
           const fields = Object.keys(record).map((key)=>{
+            let keyComponent = `$FIELD#${record.id}#${key}#${Math.random()}`;
+            if(keys.has(record.id)) {
+              keyComponent+=`1`
+            }
             return ({
               id: key,
-              element:<Field key={`#RECORDFIELD${record.id}#${key}`} onClick={()=>{}}value={record[key] ? record[key].toString() : "null"} />
+              element:<Field key={keyComponent} onClick={()=>{}}value={record[key] ? record[key].toString() : "null"} />
             });
           })
-          return <RecordContainer key={`#RECORD${record.id}`} fields={fields} onClickContainer={()=>onClickRecord(record)}/>
-        })
+          let keyComponent = `RECORD#${record.id}#${Math.random()}`;
+          return <RecordContainer key={keyComponent} fields={fields} onClickContainer={()=>onClickRecord(record)}/>
+      })
       }
     </section>
   );
