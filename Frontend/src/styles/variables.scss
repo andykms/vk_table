@@ -1,6 +1,6 @@
 :root {
   --main-font: 'OpenSans', sans-serif;
-  --field-font-size: 20px;
+  --field-font-size: clamp(0.625rem, 0.525rem + 0.5vw, 1.125rem);
   --field-background-color: #ece9e9;
   --field-color: #000;
   --record-background-color: #fff;
@@ -12,9 +12,12 @@
   --record-spacing: 10px;
   --header-background-color: #fff;
   --outlines: #ccc;
-  --field-inline-size: 150px;
+  --field-inline-size: clamp(1.5625rem, 0.424757281553398rem + 4.854368932038835vw, 6.25rem);;
   --button-background-color: #fff;
   --font-color: rgb(40, 40, 40);
+  --title-size: clamp(1.25rem, 0.8999999999999999rem + 1.7500000000000002vw, 3rem);
+  --record-gap: clamp(0.0625rem, -0.14987864077669902rem + 0.9061488673139159vw, 0.9375rem);
+  --choosen-background-color: #1dc3ff;
 }
 
 @media (max-width: 768px) {

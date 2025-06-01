@@ -1,10 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Api } from "../../models/API";
 import { MainApiUrls } from "../../constants/MainApiUrls";
-import { getTableFields, getTableRecord, putTableRecord, createTableField, deleteTableRecord, addTableRecord, getTenTableRecords, deleteField} from '../TableActions/TableActions';
+import { getTableFields, getTableRecord, putTableRecord, createTableField, deleteTableRecord, addTableRecord, getTenTableRecords, deleteField, getTableTypes} from '../TableActions/TableActions';
 import { get } from "http";
-import { FormFieldPayload } from "../Form/FormField";
+import { FormFieldPayload } from "../Form/FormFieldPayload";
 
+
+export interface ITableType {
+  id: string;
+  type: string;
+}
 
 export interface ITableRecordState {
   id: string,
@@ -22,11 +27,17 @@ export interface ITableRecordPayload {
 }
 
 export interface AddRecordFormField extends FormFieldPayload {
-  type: string,
+  type: "string"|"number"|"boolean"|"null",
+}
+
+export interface AddRecordFormPayload {
+  name: string,
+  value: string,
 }
 
 export interface ITableState {
   records: ITableRecordState[],
+  types: ITableType[],
   fields: ITableFieldState[],
   loading: boolean,
   error: string,
@@ -35,13 +46,22 @@ export interface ITableState {
   formAddRecord: FormRecordData,
 }
 
+//
+
 export interface FormRecordData {
-  [key: string]: string,
+  [key: string]: FormAddRecord,
+}
+
+//В форме у каждой записи будет выбор типа
+export interface FormAddRecord {
+  value: string;
+  type: string;
 }
 
 export const initialState: ITableState = {
   records: [],
   fields: [],
+  types: [],
   loading: false,
   error: "",
   recordsCount: 0,
@@ -59,8 +79,14 @@ export const tableSlice = createSlice({
     deleteRecord: (state, action: PayloadAction<string>) => {
       state.records = state.records.filter(record => record.id !== action.payload)
     },
-    setFormAddRecord: (state, action: PayloadAction<AddRecordFormField>) => {
-      state.formAddRecord[action.payload.name] = action.payload.value;
+    setFormAddRecordValue: (state, action: PayloadAction<AddRecordFormPayload>) => {
+      state.formAddRecord[action.payload.name].value = action.payload.value;
+    },
+    setFormAddRecordType: (state, action: PayloadAction<AddRecordFormField>) => {
+      state.formAddRecord[action.payload.name].type = action.payload.value;
+    },
+    setFormAddRecord: (state, action: PayloadAction<FormRecordData>) => {
+      state.formAddRecord = action.payload;
     },
   },
   selectors: {
@@ -70,6 +96,8 @@ export const tableSlice = createSlice({
     getError: (state: ITableState) => state.error,
     getRecordsCount: (state: ITableState) => state.recordsCount,
     getHasMore: (state: ITableState) => state.hasMore,
+    getTypes: (state: ITableState) => state.types,
+    getFormAddRecord: (state: ITableState) => state.formAddRecord,
   },
   //TODO: как-то зарефачить все эти .addCase, чтобы не было лишнего кода, как-то много кода в Slice...
   extraReducers: (builder) => {
@@ -150,8 +178,12 @@ export const tableSlice = createSlice({
       //Получение 10 записей
       .addCase(getTenTableRecords.fulfilled, (state, action) => {
         state.records = [...state.records, ...action.payload];
+        console.log(action.payload)
         state.recordsCount+=action.payload.length;
-        if(action.payload.length < 10) state.hasMore = false;
+        console.log(state.recordsCount)
+        if(action.payload.length < 10) {
+          state.hasMore = false;
+        }
         state.loading = false;
         state.error = "";
       })
@@ -191,9 +223,23 @@ export const tableSlice = createSlice({
         state.loading = true;
         state.error = "";
       })
+      //Получение типов 
+      .addCase(getTableTypes.fulfilled, (state, action) => {
+        state.types = action.payload;
+        state.loading = false;
+        state.error = "";
+      })
+      .addCase(getTableTypes.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message?action.error.message:'';
+      })
+      .addCase(getTableTypes.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
   },
 })
 
-export const {getRecords, getFields, getLoad, getError, getRecordsCount, getHasMore } = tableSlice.selectors;
+export const {getRecords, getFields, getLoad, getError, getRecordsCount, getHasMore, getTypes, getFormAddRecord } = tableSlice.selectors;
 export const tableReducer = tableSlice.reducer;
 export const tableActions = tableSlice.actions;

@@ -1,7 +1,7 @@
 import { on } from 'events';
 import { Button } from '../Button/Button';
 import style from './Modal.module.scss';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SyntheticEvent } from 'react';
 
 
@@ -11,7 +11,7 @@ export interface ModalProps {
   isOpen: boolean;
 }
 
-export const Modal: React.FC<ModalProps> = ({ content, onClose, isOpen }) => {
+export const Modal = ({ content, onClose, isOpen }: ModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   const onKeydown = (event: KeyboardEvent) => {
@@ -24,13 +24,23 @@ export const Modal: React.FC<ModalProps> = ({ content, onClose, isOpen }) => {
 
   window.addEventListener('keydown', onKeydown);
 
+  useEffect(()=>{
+    if (isOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = "auto"
+    }
+  }, [isOpen])
+  
   return (
     isOpen ?
     <>
       <div className={style.overlay} ref={modalRef}></div>
       <div className={style.modal}>
         {content}
+      <div className={style.closeButton}>
         <Button onClick={onClose}>Назад</Button>
+      </div>
       </div>
     </> : null
   );

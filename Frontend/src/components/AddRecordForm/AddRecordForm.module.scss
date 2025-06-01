@@ -1,0 +1,30 @@
+.chooseTypesSection {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  align-self: center;
+}
+
+.title {
+  font-size: var(--title-size);
+  font-weight: bold;
+  margin-block-end: 20px;
+}
+
+.titleTypes {
+  font-size: calc(var(--title-size) - 10px);
+  margin-block-end: 10px;
+}
+
+@media (max-width: 800px) {
+  .chooseTypesSection {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .chooseTypesSection {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+

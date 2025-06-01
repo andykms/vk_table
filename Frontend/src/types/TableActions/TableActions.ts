@@ -14,6 +14,15 @@ interface PostedApiRecord {
 
 const api = new Api(MainApiUrls);
 
+export const getTableTypes = createAsyncThunk(
+  "table/getTableTypes",
+  async () => {
+    const response = await api.getTypes();
+    return response;
+  }
+);
+
+
 export const getTableFields = createAsyncThunk(
   "table/getTableFields",
   async () => {

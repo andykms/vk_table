@@ -1,6 +1,4 @@
-export interface ApiTypes {
-  types: ApiType[];
-}
+export type ApiTypes = ApiType[];
 
 export interface ApiType {
   id: string;

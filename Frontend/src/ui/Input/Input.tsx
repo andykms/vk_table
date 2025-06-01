@@ -1,20 +1,23 @@
 import { ForwardedRef, InputHTMLAttributes } from "react";
 import style from './Input.module.scss';
 import clsx from "clsx";
+import { useState, useRef } from "react";
+import { SyntheticEvent } from "react";
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  inputRef?: ForwardedRef<HTMLInputElement>;
-  error?: string;
-  value?: string;
-  className?: string;
+interface InputProps {
+  label: string,
+  error?: string,
+  onChange: (evt: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
 }
 
 export const Input = (props: InputProps) => {
-  const { inputRef, error, value, className, ...rest } = props;
+  const { label, error, onChange, value} = props;
   return (
-    <label className = {style.label}>
-      <input className={clsx(className, style.input)} ref={inputRef} value={value} {...rest} />
+  <div className={style.inputContiner}>
+    <p className = {style.label}>{label}</p>
+      <input onChange={onChange} value={value} className={style.input} type={'text'}/>
       {error && <span className={style.error}>{error}</span>}
-    </label>
+  </div>
   )
 };

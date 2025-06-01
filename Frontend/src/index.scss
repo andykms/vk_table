@@ -5,8 +5,10 @@
 html,
 body {
   font-family: var(--main-font);
+  pointer-events: all;
 }
 
 .root {
+  pointer-events: all;
 }
 

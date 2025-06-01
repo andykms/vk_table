@@ -17,3 +17,11 @@
 .button:hover {
   background-color: var(--outlines);
 }
+
+.choosenButton {
+  background-color: var(--choosen-background-color);
+}
+
+.choosenButton:hover {
+  background-color: var(--choosen-background-color);
+}

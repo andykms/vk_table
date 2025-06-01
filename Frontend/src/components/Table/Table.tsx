@@ -47,10 +47,10 @@ export const Table = (props: TableProps) => {
           const fields = Object.keys(record).map((key)=>{
             return ({
               id: key,
-              element:<Field key={key} onClick={()=>{}}value={record[key] ? record[key].toString() : "null"} />
+              element:<Field key={`#RECORDFIELD${record.id}#${key}`} onClick={()=>{}}value={record[key] ? record[key].toString() : "null"} />
             });
           })
-          return <RecordContainer key={record.id} fields={fields} onClickContainer={()=>onClickRecord(record)}/>
+          return <RecordContainer key={`#RECORD${record.id}`} fields={fields} onClickContainer={()=>onClickRecord(record)}/>
         })
       }
     </section>

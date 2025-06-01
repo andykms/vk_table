@@ -3,17 +3,28 @@
   z-index: 1000;
   inline-size: 100%;
   block-size: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  filter: grayscale(80%);
+  background-color: black;
+  opacity: 0.5;
 }
 
 .modal {
-  min-inline-size: 500px;
+  background-color: white;
+  position: absolute;
+  z-index: 1001;
+  margin-left: auto;
+  margin-right: auto;
+  top: 50%;  /* position the top  edge of the element at the middle of the parent */
+  left: 50%; /* position the left edge of the element at the middle of the parent */
+  transform: translate(-50%, -50%); 
   min-block-size: 500px;
   padding: 15px;
   display: flex;
-  flex-direction: column;;
+  flex-direction: column;
+  border: var(--outlines) 2px solid;
+  border-radius: 15px;
+}
+
+.closeButton {
+  padding-block-start: 20px;
+  justify-self: flex-end;
 }

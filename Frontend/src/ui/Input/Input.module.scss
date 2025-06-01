@@ -1,0 +1,23 @@
+.inputContiner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.label {
+  font-size: 14px;
+}
+
+.error {
+  display: block;
+  block-size: 10px;
+}
+
+.input {
+  block-size: 30px;
+  inline-size: 90%;
+  align-self: center;
+  border: var(--outlines) 2px solid;
+  border-radius: 10px;
+  pointer-events: all;
+}

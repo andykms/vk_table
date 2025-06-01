@@ -5,8 +5,7 @@
   inline-size: auto;
   border: var(--outlines) 1px solid;
   border-radius: 15px;
-  gap:15px;
-  gap: var(--record-spacing);
+  gap: var(--record-gap);
   cursor: pointer;
 }
 

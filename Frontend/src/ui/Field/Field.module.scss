@@ -4,10 +4,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 1rem;
 }
 
 .label {
+  display: block;
   font-size: var(--field-font-size);
   color: var(--field-color);
   overflow: hidden;  

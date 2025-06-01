@@ -22,15 +22,19 @@ interface InfiniteTableProps {
   onLoadMore: (lastRecord: string) => void;
   onClickRecord: (record: InfiniteTableRecord) => void;
   hasMore: boolean;
-  lastRecord: string;
+  isLoad: boolean;
 }
 
 export const InfiniteTable = (props: InfiniteTableProps) => {
-  const { records, fields, loader, onLoadMore, onClickRecord, hasMore, lastRecord } = props;
+  const { records, fields, loader, onLoadMore, onClickRecord, hasMore, isLoad } = props;
+
+  const [lastRecord, setLastRecord] = useState<number>(10);
 
   const loadMore = () => {
-    onLoadMore(lastRecord);
+    setLastRecord(lastRecord + 10);
+    onLoadMore(lastRecord.toString());
   };
+
 
   return (
     <InfiniteScroll

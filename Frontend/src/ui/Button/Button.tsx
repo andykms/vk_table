@@ -1,16 +1,20 @@
 import style from './Button.module.scss';
+import clsx from 'clsx';
+
 
 export interface ButtonProps {
   children: string;
-  onClick: () => void;
+  onClick: (evt: React.MouseEvent) => void;
   disabled?: boolean;
+  isChoosen?: boolean;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 export const Button = (props: ButtonProps) => {
-  const { children, onClick, disabled } = props;
+  const { children, onClick, disabled, isChoosen, type } = props;
   let isDisabled = disabled ? disabled : false;
   return (
-    <button className={style.button} onClick={onClick} disabled={isDisabled}>
+    <button type={type} className={clsx(style.button, isChoosen && style.choosenButton)} onClick={onClick} disabled={isDisabled}>
       {children}
     </button>
   );
