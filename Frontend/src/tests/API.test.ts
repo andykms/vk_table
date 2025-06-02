@@ -9,30 +9,36 @@ const mockApi = new Api(TestApiUrls);
 test("Получение полей", async () => {
   const fields = await mockApi.getFields();
   expect(fields).toEqual([
-        { 
-          "id": "0",
-          "name": "id"
-        },
-        { 
-          "id": "1",
-          "name": "Товар"
-        },
-        { 
-          "id": "2",
-          "name": "Цена"
-        },
-        { 
-          "id": "3",
-          "name": "Производитель"
-        },
-        { 
-          "id": "4",
-          "name": "Дата производства"
-        },
-        {
-          "id": "5",
-          "name": "Категория"
-        }
+    {
+      "id": "0",
+      "name": "id",
+      "type": "string"
+    },
+    {
+      "id": "1",
+      "name": "Товар",
+      "type": "string"
+    },
+    {
+      "id": "2",
+      "name": "Цена",
+      "type": "float"
+    },
+    {
+      "id": "3",
+      "name": "Производитель",
+      "type": "string"
+    },
+    {
+      "id": "4",
+      "name": "Дата производства",
+      "type": "string"
+    },
+    {
+      "id": "5",
+      "name": "Категория",
+      "type": "string"
+    }
   ]);
 })
 
@@ -122,15 +128,18 @@ test('Получение 10 записей начиная с некоторой 
 test('Добавление поля и его удаление', async () => {
   const fields = await mockApi.postField({
       "id": "6",
-      "name": "Категория"
+      "name": "Категория",
+      "type": "string",
     });
   expect(fields).toEqual({
       "id": "6",
-      "name": "Категория"
+      "name": "Категория",
+      "type": "string"
     });
   const deletedField = await mockApi.deleteField("6");
   expect(deletedField).toEqual({
       "id": "6",
-      "name": "Категория"
+      "name": "Категория",
+      "type": "string",
   });
 })

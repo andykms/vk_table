@@ -64,7 +64,7 @@ export const App = () => {
 				if (field.name !== 'id') {
 					formFields[field.name] = {
 						name: field.name,
-						type: Types[0].type,
+						type: field.type,
 						value: '',
 					}
 				}
@@ -104,18 +104,16 @@ export const App = () => {
 	}
 
 	const onSubmitAddRecord = (data: FormData) => {
-		const obData: { [key in string]: string } = {}
-		Object.keys(data).forEach((key) => {
-			if (key !== 'id' && data[key].name !== 'id')
-				obData[data[key].name] = data[key].value
+		const obData: {[key:string]: string} = {};
+		Object.keys(data).forEach((dataKey)=>{
+			obData[dataKey] = data[dataKey].value;
 		})
-		console.log(tableLength)
 		const newRecord: ApiRecord = {
 			id: (tableLength + 1).toString(),
 			...obData,
 		}
 		dispatch(addTableRecord(newRecord))
-		dispatch(putTableLength(tableLength + 1))
+		dispatch(putTableLength(tableLength + 1));
 		setOpenModal(false)
 	}
 
@@ -129,15 +127,6 @@ export const App = () => {
 		dispatch(getTenTableRecords(start))
 	}
 
-	const onChangeFormAddRecord = (field: string, value: string) => {
-		dispatch(
-			tableActions.setFormAddRecordValue({
-				name: field,
-				value: value,
-			})
-		)
-	}
-
 	return (
 		<>
 			<Modal
@@ -145,12 +134,9 @@ export const App = () => {
 				onClose={onCloseModal}
 				content={
 					<AddRecordForm
-						onChange={onChangeFormAddRecord}
 						formData={formAddRecordData}
 						onSubmit={onSubmitAddRecord}
 						validations={validations}
-						types={Types}
-						onChooseType={onChooseType}
 					/>
 				}
 			></Modal>

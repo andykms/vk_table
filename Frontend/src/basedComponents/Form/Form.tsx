@@ -2,16 +2,22 @@ import { Input } from "../../ui/Input/Input";
 import { Test, ValidationTest, valdationFunction, FormValidation } from "../../types/Form/FormValidationTypes";
 import { Button } from "../../ui/Button/Button";
 import style from './Form.module.scss';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { data } from "react-router-dom";
 import { set } from "react-hook-form";
+import { stat } from "fs";
 
 export interface FormData {
   [key: string]: {
     value: string,
-    type: string,
-    name: string,
   };
+}
+
+export interface FormState {
+  [key: string]: {
+    error: string|boolean,
+    value: string,
+  }
 }
 
 export interface FormProps {
@@ -19,36 +25,66 @@ export interface FormProps {
   validations: FormValidation;
   buttonSubmitText: string;
   onSubmit: (data: FormData) => void;
-  onChange: (field: string, value: string) => void;
+}
+
+function isValidity(form: FormState) {
+  return Object.values(form).every((field)=> {
+    return typeof field.error !== 'string';
+  })
 }
 
 export function Form(props: FormProps) {
-  const { fields, validations, onSubmit, buttonSubmitText, onChange } = props;
+  const { fields, validations, onSubmit, buttonSubmitText } = props;
+
   const onSubmitForm = (evt: React.SyntheticEvent) => {
     evt.preventDefault();
-    props.onSubmit(fields);
+    onSubmit(formState);
   }
   
-  const initialErrors: {[key: string]: string} = {};
+  const initialFormState: FormState ={};
   Object.keys(fields).forEach((field)=>{
-    initialErrors[field] = '';
+    initialFormState[field] = {
+      error: '',
+      value: fields[field].value,
+    }
   })
-  const [errors, setErrors] = useState(initialErrors);
-  
+  const [formState, setForm] = useState<FormState>(initialFormState);
+  const [disabled, setDisabled] = useState<boolean>(true);
+
+  useEffect(()=>{
+    if(!isValidity(formState)) {
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+    }
+  }, [formState])
+
   const onChangeInput = (field: string, evt: React.ChangeEvent<HTMLInputElement>) => {
-   
+    let error: string|boolean = false;
+    const value = evt.target.value;
     validations[field].forEach((test)=>{
-      console.log(test.validate(evt.target.value))
-      const result = test.validate(evt.target.value);
-      if(typeof result === "string") {
-        setErrors({...errors, [field]: result});
-      } else {
-        setErrors({...errors, [field]: ''});
+      let currentError = test.validate(value);
+      if(typeof currentError === 'string') {
+        error = currentError;
       }
-    });
-    console.log(errors)
-    onChange(field, evt.target.value);
+    })
+    const newState: FormState = {};
+    Object.keys(formState).forEach((state)=>{
+      if(field === state){
+        newState[state] = {
+          value: value,
+          error: error,
+        }
+      } else {
+        newState[state] = {
+          value: formState[state].value,
+          error: formState[state].error
+        }
+      }
+    })
+    setForm(newState);
   }
+
   return (
     <form className={style.form}>
       {
@@ -58,13 +94,13 @@ export function Form(props: FormProps) {
               key={`#FORM${index}`}
               label={field}
               onChange={(evt: React.ChangeEvent<HTMLInputElement>)=> onChangeInput(field, evt)}
-              value={fields[field]?.value}
-              error={errors[field]}
+              value={formState[field].value}
+              error={typeof formState[field].error === 'string' ? formState[field].error : ''}
             />
           )
         })
       }
-      <Button onClick={(evt: React.MouseEvent)=>{evt.preventDefault(); onSubmit(fields)}}>{buttonSubmitText}</Button>
+      <Button disabled = {disabled} onClick={onSubmitForm}>{buttonSubmitText}</Button>
     </form>
   );
 };

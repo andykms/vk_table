@@ -5,6 +5,7 @@ import { MainApiUrls } from "../../constants/MainApiUrls";
 interface ApiField {
   id: string;
   name: string;
+  type: string,
 }
 
 interface PostedApiRecord {

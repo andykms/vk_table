@@ -18,6 +18,7 @@ export interface ITableRecordState {
 export interface ITableFieldState {
   id: string,
   name: string,
+  type: string,
 }
 
 export interface ITableRecordPayload {

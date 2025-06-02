@@ -18,6 +18,8 @@
   --title-size: clamp(1.25rem, 0.8999999999999999rem + 1.7500000000000002vw, 3rem);
   --record-gap: clamp(0.0625rem, -0.14987864077669902rem + 0.9061488673139159vw, 0.9375rem);
   --choosen-background-color: #1dc3ff;
+  --disabled-background: rgb(240, 239, 239);
+  --disabled-color: #ccc;
 }
 
 @media (max-width: 768px) {

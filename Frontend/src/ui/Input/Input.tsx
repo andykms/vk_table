@@ -14,10 +14,15 @@ interface InputProps {
 
 export const Input = (props: InputProps) => {
   const { label, error, onChange, value} = props;
+
+  const onChangeInput = (evt: React.ChangeEvent<HTMLInputElement>)=>{
+    onChange(evt);
+  }
+
   return (
   <div className={style.inputContiner}>
     <p className = {style.label}>{label}</p>
-      <input onChange={onChange} value={value} className={style.input} type={'text'}/>
+      <input onChange={onChangeInput} value={value} className={style.input} type={'text'}/>
       <span className={style.error}>{error}</span>
   </div>
   )

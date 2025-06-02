@@ -25,3 +25,9 @@
 .choosenButton:hover {
   background-color: var(--choosen-background-color);
 }
+
+.button:disabled {
+  background-color: var(--disabled-background);
+  color: var(--disabled-color);
+  cursor:auto;
+}

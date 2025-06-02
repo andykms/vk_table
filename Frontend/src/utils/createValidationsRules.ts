@@ -32,7 +32,7 @@ export const createValidationsRules = (fields: Field): FormValidation => {
 					case 'float':
 						return FLOAT_TYPE_REGEX.test(value)
 							? true
-							: 'Необходимо ввести число'
+							: 'Необходимо ввести число с плавающей точкой'
 					case 'integer':
 						return INT_TYPE_REGEX.test(value)
 							? true
