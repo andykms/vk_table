@@ -36,6 +36,8 @@ import { tableActions } from '../types/TableReducer/TableSlice'
 import { getLength } from '../types/TableReducer/TableSlice'
 import { putTableLength } from '../types/TableActions/TableActions'
 import { getTableLength } from '../types/TableActions/TableActions'
+import { getApiFromData } from '../utils/getApiFormData'
+
 
 export const App = () => {
 	const dispatch = useDispatch<AppDispatch>()
@@ -104,10 +106,7 @@ export const App = () => {
 	}
 
 	const onSubmitAddRecord = (data: FormData) => {
-		const obData: {[key:string]: string} = {};
-		Object.keys(data).forEach((dataKey)=>{
-			obData[dataKey] = data[dataKey].value;
-		})
+		const obData = getApiFromData(data);
 		const newRecord: ApiRecord = {
 			id: (tableLength + 1).toString(),
 			...obData,
