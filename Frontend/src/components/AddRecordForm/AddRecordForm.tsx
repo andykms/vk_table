@@ -43,7 +43,8 @@ export interface AddRecordFormProps {
 export const AddRecordForm = (props: AddRecordFormProps) => {
   const {onSubmit, validations, formData } = props;
   const chooseType = Object.keys(formData).map((field)=>{
-        return <DropDownMenu menuTitle={formData[field].name} menusElements={[<Field value={formData[field].type} onClick={()=>{}}></Field>]} key={`DROPDOWN_${formData[field].name}`} uniqueKey={formData[field].name}/>
+        return <Button onClick={()=>{}} isLikePrint={true}>{`${formData[field].name} : ${formData[field].type}`}</Button>
+        //<DropDownMenu menuTitle={formData[field].name} menusElements={[<Field value={formData[field].type} onClick={()=>{}}></Field>]} key={`DROPDOWN_${formData[field].name}`} uniqueKey={formData[field].name}/>
       })
 
   return (

@@ -31,3 +31,11 @@
   color: var(--disabled-color);
   cursor:auto;
 }
+
+.print {
+  cursor: auto;
+}
+
+.print:hover {
+  background-color: var(--button-background-color);
+}
